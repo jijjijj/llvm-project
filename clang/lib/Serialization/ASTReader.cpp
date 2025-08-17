@@ -3249,13 +3249,13 @@ ASTReader::ReadControlBlock(ModuleFile &F,
 
       const std::string &CurBranch = getClangFullRepositoryVersion();
       StringRef ASTBranch = Blob;
-      if (StringRef(CurBranch) != ASTBranch && !DisableValidation) {
-        if ((ClientLoadCapabilities & ARR_VersionMismatch) == 0)
-          Diag(diag::err_ast_file_different_branch)
-              << moduleKindForDiagnostic(F.Kind) << F.FileName << ASTBranch
-              << CurBranch;
-        return VersionMismatch;
-      }
+//      if (StringRef(CurBranch) != ASTBranch && !DisableValidation) {
+//        if ((ClientLoadCapabilities & ARR_VersionMismatch) == 0)
+//          Diag(diag::err_ast_file_different_branch)
+//              << moduleKindForDiagnostic(F.Kind) << F.FileName << ASTBranch
+//              << CurBranch;
+//        return VersionMismatch;
+//      }
       break;
     }
 
