@@ -1515,6 +1515,9 @@ bool MatchASTVisitor::TraverseDecl(Decl *DeclNode) {
   if (Options.SkipDeclsInModules && DeclNode->isInAnotherModuleUnit())
     return true;
 
+  if (Options.SkipDeclsInModules && DeclNode->isInAnotherModuleUnit())
+    return true;
+
   bool ScopedTraversal =
       TraversingASTNodeNotSpelledInSource || DeclNode->isImplicit();
   bool ScopedChildren = TraversingASTChildrenNotSpelledInSource;
