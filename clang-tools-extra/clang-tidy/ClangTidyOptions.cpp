@@ -147,14 +147,16 @@ template <> void yamlize(IO &IO, ChecksVariant &Val, bool, EmptyContext &Ctx) {
   }
 }
 
-static void mapChecks(IO &IO, std::optional<std::string> &Checks) {
+static void mapChecks(IO &IO,
+    std::optional<std::string> &Checks,
+    const std::string& Name) {
   if (IO.outputting()) {
     // Output always a string
-    IO.mapOptional("Checks", Checks);
+    IO.mapOptional(Name.c_str(), Checks);
   } else {
     // Input as either a string or a list
     ChecksVariant ChecksAsVariant;
-    IO.mapOptional("Checks", ChecksAsVariant);
+    IO.mapOptional(Name.c_str(), ChecksAsVariant);
     if (ChecksAsVariant.AsString)
       Checks = ChecksAsVariant.AsString;
     else if (ChecksAsVariant.AsVector)
@@ -164,7 +166,8 @@ static void mapChecks(IO &IO, std::optional<std::string> &Checks) {
 
 template <> struct MappingTraits<ClangTidyOptions> {
   static void mapping(IO &IO, ClangTidyOptions &Options) {
-    mapChecks(IO, Options.Checks);
+    mapChecks(IO, Options.Checks, "Checks");
+    mapChecks(IO, Options.DoNotTraverseNotesChecks, "DoNotTraverseNotesChecks");
     IO.mapOptional("WarningsAsErrors", Options.WarningsAsErrors);
     IO.mapOptional("HeaderFileExtensions", Options.HeaderFileExtensions);
     IO.mapOptional("ImplementationFileExtensions",
@@ -190,6 +193,7 @@ namespace clang::tidy {
 ClangTidyOptions ClangTidyOptions::getDefaults() {
   ClangTidyOptions Options;
   Options.Checks = "";
+  Options.DoNotTraverseNotesChecks = "";
   Options.WarningsAsErrors = "";
   Options.HeaderFileExtensions = {"", "h", "hh", "hpp", "hxx"};
   Options.ImplementationFileExtensions = {"c", "cc", "cpp", "cxx"};
@@ -228,6 +232,7 @@ static void overrideValue(std::optional<T> &Dest, const std::optional<T> &Src) {
 
 ClangTidyOptions &ClangTidyOptions::mergeWith(const ClangTidyOptions &Other,
                                               unsigned Order) {
+  mergeCommaSeparatedLists(DoNotTraverseNotesChecks, Other.DoNotTraverseNotesChecks);
   mergeCommaSeparatedLists(Checks, Other.Checks);
   mergeCommaSeparatedLists(WarningsAsErrors, Other.WarningsAsErrors);
   overrideValue(HeaderFileExtensions, Other.HeaderFileExtensions);

@@ -69,6 +69,9 @@ struct ClangTidyOptions {
   /// Checks filter.
   std::optional<std::string> Checks;
 
+  /// Do not traverse all notes checks filter.
+  std::optional<std::string> DoNotTraverseNotesChecks;
+
   /// WarningsAsErrors filter.
   std::optional<std::string> WarningsAsErrors;
 
