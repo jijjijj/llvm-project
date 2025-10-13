@@ -226,6 +226,7 @@ static void mapGlobList(IO &IO, std::optional<std::string> &GlobList,
 template <> struct MappingTraits<ClangTidyOptions> {
   static void mapping(IO &IO, ClangTidyOptions &Options) {
     mapGlobList(IO, Options.Checks, "Checks");
+    mapGlobList(IO, Options.DoNotTraverseNotesChecks, "DoNotTraverseNotesChecks");
     mapGlobList(IO, Options.WarningsAsErrors, "WarningsAsErrors");
     IO.mapOptional("HeaderFileExtensions", Options.HeaderFileExtensions);
     IO.mapOptional("ImplementationFileExtensions",
@@ -253,6 +254,7 @@ namespace clang::tidy {
 ClangTidyOptions ClangTidyOptions::getDefaults() {
   ClangTidyOptions Options;
   Options.Checks = "";
+  Options.DoNotTraverseNotesChecks = "";
   Options.WarningsAsErrors = "";
   Options.HeaderFileExtensions = {"", "h", "hh", "hpp", "hxx"};
   Options.ImplementationFileExtensions = {"c", "cc", "cpp", "cxx"};
@@ -292,6 +294,7 @@ static void overrideValue(std::optional<T> &Dest, const std::optional<T> &Src) {
 
 ClangTidyOptions &ClangTidyOptions::mergeWith(const ClangTidyOptions &Other,
                                               unsigned Order) {
+  mergeCommaSeparatedLists(DoNotTraverseNotesChecks, Other.DoNotTraverseNotesChecks);
   mergeCommaSeparatedLists(Checks, Other.Checks);
   mergeCommaSeparatedLists(WarningsAsErrors, Other.WarningsAsErrors);
   overrideValue(HeaderFileExtensions, Other.HeaderFileExtensions);
