@@ -238,6 +238,8 @@ void ClangTidyContext::setCurrentFile(StringRef File) {
   CurrentFile = std::string(File);
   CurrentOptions = getOptionsForFile(CurrentFile);
   CheckFilter = std::make_unique<CachedGlobList>(*getOptions().Checks);
+  DoNotTraverseCheckFilter = std::make_unique<CachedGlobList>(
+      *getOptions().DoNotTraverseNotesChecks);
   WarningAsErrorFilter =
       std::make_unique<CachedGlobList>(*getOptions().WarningsAsErrors);
   if (!parseFileExtensions(*getOptions().HeaderFileExtensions,
@@ -285,6 +287,12 @@ ClangTidyContext::getProfileStorageParams() const {
 bool ClangTidyContext::isCheckEnabled(StringRef CheckName) const {
   assert(CheckFilter != nullptr);
   return CheckFilter->contains(CheckName);
+}
+
+bool ClangTidyContext::
+isCheckNotesTraversalDisabled(StringRef CheckName) const {
+  assert(DoNotTraverseCheckFilter != nullptr);
+  return DoNotTraverseCheckFilter->contains(CheckName);
 }
 
 bool ClangTidyContext::treatAsError(StringRef CheckName) const {

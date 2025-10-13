@@ -71,12 +71,13 @@ public:
       Context.diag(CheckName, PD->getLocation().asLocation(),
                    PD->getShortDescription())
           << PD->path.back()->getRanges();
-
-      for (const auto &DiagPiece :
-           PD->path.flatten(/*ShouldFlattenMacros=*/true)) {
-        Context.diag(CheckName, DiagPiece->getLocation().asLocation(),
-                     DiagPiece->getString(), DiagnosticIDs::Note)
-            << DiagPiece->getRanges();
+      if (!Context.isCheckNotesTraversalDisabled(CheckName)) {
+        for (const auto &DiagPiece :
+             PD->path.flatten(/*ShouldFlattenMacros=*/true)) {
+          Context.diag(CheckName, DiagPiece->getLocation().asLocation(),
+                       DiagPiece->getString(), DiagnosticIDs::Note)
+              << DiagPiece->getRanges();
+        }
       }
     }
   }

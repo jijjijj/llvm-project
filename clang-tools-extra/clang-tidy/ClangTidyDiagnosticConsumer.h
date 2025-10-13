@@ -151,6 +151,8 @@ public:
   /// The \c CurrentFile can be changed using \c setCurrentFile.
   bool isCheckEnabled(StringRef CheckName) const;
 
+  bool isCheckNotesTraversalDisabled(StringRef CheckName) const;
+
   /// Returns \c true if the check should be upgraded to error for the
   /// \c CurrentFile.
   bool treatAsError(StringRef CheckName) const;
@@ -240,6 +242,7 @@ private:
   ClangTidyOptions CurrentOptions;
 
   std::unique_ptr<CachedGlobList> CheckFilter;
+  std::unique_ptr<CachedGlobList> DoNotTraverseCheckFilter;
   std::unique_ptr<CachedGlobList> WarningAsErrorFilter;
 
   FileExtensionsSet HeaderFileExtensions;
