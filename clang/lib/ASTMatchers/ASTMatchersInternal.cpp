@@ -615,6 +615,8 @@ bool HasNameMatcher::matchesNodeFullFast(const NamedDecl &Node) const {
     // FIXME: Any other DeclContext kinds that can be safely disregarded
     if (isa<LinkageSpecDecl>(Ctx))
       continue;
+    if (isa<ExportDecl>(Ctx))
+      continue;
     if (!isa<NamedDecl>(Ctx))
       break;
     if (Patterns.foundMatch(/*AllowFullyQualified=*/false))
