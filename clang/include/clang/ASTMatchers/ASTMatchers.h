@@ -544,6 +544,9 @@ extern const internal::VariadicAllOfMatcher<CXXBaseSpecifier> cxxBaseSpecifier;
 extern const internal::VariadicAllOfMatcher<CXXCtorInitializer>
     cxxCtorInitializer;
 
+extern const internal::VariadicDynCastAllOfMatcher<Decl, ImportDecl>
+    importDecl;
+
 /// Matches template arguments.
 ///
 /// Given
