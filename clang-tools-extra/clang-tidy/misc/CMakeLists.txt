@@ -24,6 +24,7 @@ add_clang_library(clangTidyMiscModule STATIC
   ConfusableIdentifierCheck.cpp
   HeaderIncludeCycleCheck.cpp
   IncludeCleanerCheck.cpp
+  ImportOrderCheck.cpp
   MiscTidyModule.cpp
   MisleadingBidirectional.cpp
   MisleadingIdentifier.cpp
