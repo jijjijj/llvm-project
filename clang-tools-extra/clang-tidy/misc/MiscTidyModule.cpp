@@ -33,6 +33,7 @@
 #include "UseAnonymousNamespaceCheck.h"
 #include "UseInternalLinkageCheck.h"
 #include "ImportOrderCheck.h"
+#include "FileNameCheck.h"
 
 namespace clang::tidy {
 namespace misc {
@@ -84,6 +85,8 @@ public:
         "misc-use-internal-linkage");
     CheckFactories.registerCheck<ImportOrderCheck>(
         "misc-import-order");
+    CheckFactories.registerCheck<FileNameCheck>(
+        "misc-file-name");
   }
 };
 
