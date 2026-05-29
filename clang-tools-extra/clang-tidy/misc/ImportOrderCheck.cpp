@@ -93,13 +93,15 @@ void ImportOrderCheck::check(
   size_t Index = Name.find(ModulePartitionSymbol);
   const bool IsPartition = Index != std::string::npos;
 
+  const std::string EffectiveName = IsPartition ? Name.substr(Index) : Name;
+
   ImportInfo Info = {
-      IsPartition ? Name.substr(Index) : Name,
-      getPriority(Name, UserModuleRegex, IsPartition),
+      EffectiveName,
+      getPriority(EffectiveName, UserModuleRegex, IsPartition),
       Import->isInExportDeclContext(),
       getImportDeclRange(*Import, SourceManager->get())
   };
-
+  
   Imports.push_back(std::move(Info));
 }
 
